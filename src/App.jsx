@@ -23,10 +23,14 @@ const App = () => {
     if (!query) return;
 
     const fetchImages = async () => {
-      setIsLoading(true);
       setError(null);
       try {
+        setIsLoading(true);
         const data = await searchImages(query, page);
+        if (data.results.length === 0) {
+          setError(`No images found for "${query}"`);
+          return;
+        }
         setImages((prev) =>
           page === 1 ? data.results : [...prev, ...data.results]
         );
